@@ -30,7 +30,6 @@ async function run() {
 
     // GET Blog API
     app.get("/blogs", async (req, res) => {
-      console.log(req.query);
       const cursor = blogsCollection.find({});
       const page = req.query.page;
       const size = parseInt(req.query.size);
@@ -58,14 +57,13 @@ async function run() {
       res.json(result);
     });
 
-    // // DELETE Product
-    // app.delete('/products/:id', async (req, res) => {
-    //     const id = req.params.id;
-    //     const query = { _id: ObjectId(id) };
-    //     const result = await productCollection.deleteOne(query);
-    //     res.json(result);
-    //     //console.log(result)
-    // })
+    // DELETE packages
+    app.delete('/blogs/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const result = await blogsCollection.deleteOne(query);
+        res.json(result);
+    })
 
     // POST Order
     // app.post('/orders', async (req, res) => {
@@ -165,14 +163,15 @@ async function run() {
         res.json({ admin: isAdmin })
     })
 
-    // // Update
-    // app.put('/orders/:id', async (req, res) => {
-    //     const id = req.params.id;
-    //     const filter = { _id: ObjectId(id) }
-    //     const updateDoc = { $set: { status: req.body.status } }
-    //     const result = await ordersCollection.updateOne(filter, updateDoc)
-    //     res.json(result);
-    // })
+    // Update
+    app.put('/blogs/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) }
+        const updateDoc = { $set: { status: req.body.status } }
+        const result = await ordersCollection.updateOne(filter, updateDoc)
+        res.json(result);
+    })
+
   } finally {
     //   await client.close();
   }
