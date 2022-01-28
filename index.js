@@ -142,14 +142,27 @@ async function run() {
     //     console.log("console " ,result)
     // })
 
-    // admin
+    // Make admin
+    // app.put('/users/admin', async (req, res) => {
+    //     const filter = { email: req.body.email }
+    //     const updateDoc = { $set: { role: 'admin' } }
+    //     const result = await usersCollection.updateOne(filter, updateDoc)
+    //     res.json(result)
+    //     console.log(result)
+    // })
+
     app.put('/users/admin', async (req, res) => {
-        const filter = { email: req.body.email }
-        const updateDoc = { $set: { role: 'admin' } }
-        const result = await usersCollection.updateOne(filter, updateDoc)
-        res.json(result)
-        console.log(result)
-    })
+      const email = req.body.email 
+      const filter = {email : email}
+      console.log(email);
+      const updateDoc = {
+          $set : {
+              role : 'admin'
+          }
+      }
+      const user = await usersCollection.updateOne(filter, updateDoc);
+      res.json(user)
+  });
 
     // admin Check
     app.get('/users/:email', async (req, res) => {
@@ -164,13 +177,41 @@ async function run() {
     })
 
     // Update
+    // app.put('/blogs/:id', async (req, res) => {
+    //     const id = req.params.id;
+    //     const filter = { _id: ObjectId(id) }
+    //     const updateDoc = { $set: { status: req.body.status } }
+    //     const result = await blogsCollection.updateOne(filter, updateDoc)
+    //     res.json(result);
+    // })
     app.put('/blogs/:id', async (req, res) => {
-        const id = req.params.id;
-        const filter = { _id: ObjectId(id) }
-        const updateDoc = { $set: { status: req.body.status } }
-        const result = await ordersCollection.updateOne(filter, updateDoc)
-        res.json(result);
-    })
+      const id = req.params.id
+      console.log(id);
+      const data = req.body
+      const query = {_id : ObjectId(id)}
+      const option = {upsert : true}
+      const updateDoc = {
+          $set : {
+            thumb : data.thumb, 
+            title : data.title,
+            totalHotel : data.totalHotel,
+            avgPrice : data.avgPrice ,
+            descAbout : data.descAbout,
+            desc1 : data.desc1, 
+            visitPlace : data.visitPlace, 
+            image1 : data.image1, 
+            image2 : data.image2, 
+            image3 : data.image3,
+            rating : data.rating,
+            day : data.day,
+            Latitude : data.Latitude,
+            longitude : data.longitude,
+            status : data.status
+          }
+      }
+      const result = await blogsCollection.updateOne(query, updateDoc, option)
+      res.json(result)
+  })
 
   } finally {
     //   await client.close();
