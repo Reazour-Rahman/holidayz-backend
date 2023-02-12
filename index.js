@@ -184,6 +184,7 @@ async function run() {
     //     const result = await blogsCollection.updateOne(filter, updateDoc)
     //     res.json(result);
     // })
+    
     app.put('/blogs/:id', async (req, res) => {
       const id = req.params.id
       console.log(id);
